@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<script>
+/* Horário noturno: só ligação. Ajuste aqui (horário de Brasília). */
+var NOITE_INICIO = 22, NOITE_FIM = 6;
+function rsModoNoite(){
+  var h;
+  try { h = +new Intl.DateTimeFormat('pt-BR',{hour:'numeric',hourCycle:'h23',timeZone:'America/Sao_Paulo'}).format(new Date()); }
+  catch(e){ h = new Date().getHours(); }
+  var noite = NOITE_INICIO > NOITE_FIM ? (h >= NOITE_INICIO || h < NOITE_FIM) : (h >= NOITE_INICIO && h < NOITE_FIM);
+  document.documentElement.classList.toggle('noite', noite);
+}
+rsModoNoite(); setInterval(rsModoNoite, 60000);
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guincho 24h em Águas Lindas de Goiás | RS Guincho – Reboque e Auto Socorro</title>
@@ -87,7 +99,7 @@
     {"@type":"Question","name":"Quanto custa o guincho em Águas Lindas?","acceptedAnswer":{"@type":"Answer","text":"O valor depende da distância, do tipo de veículo e do local da remoção. Chame no WhatsApp com sua localização e o destino e passamos o orçamento na hora, sem compromisso."}},
     {"@type":"Question","name":"Quais veículos vocês rebocam?","acceptedAnswer":{"@type":"Answer","text":"Carros de passeio, motos, SUVs, caminhonetes e utilitários leves, inclusive veículos rebaixados e acidentados."}},
     {"@type":"Question","name":"Vocês levam o carro para fora de Águas Lindas?","acceptedAnswer":{"@type":"Answer","text":"Sim. Fazemos transporte para Brasília, cidades do Entorno e outras cidades de Goiás. Consulte o valor pelo WhatsApp."}},
-    {"@type":"Question","name":"Como faço para chamar o guincho?","acceptedAnswer":{"@type":"Answer","text":"Ligue ou chame no WhatsApp, envie sua localização pelo próprio WhatsApp e diga o modelo do veículo e o problema. Confirmamos o valor e o horário de chegada."}}
+    {"@type":"Question","name":"Como faço para chamar o guincho?","acceptedAnswer":{"@type":"Answer","text":"Ligue ou chame no WhatsApp, informe sua localização, o modelo do veículo e o problema. Confirmamos o valor e o horário de chegada. Das 22h às 6h, o atendimento é só por ligação."}}
   ]
 }
 </script>
@@ -221,6 +233,15 @@ footer a{color:#fff}
   section{padding:84px 0}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* modo noite: some o WhatsApp, fica só ligação */
+.so-noite{display:none}
+.noite .so-noite{display:block}
+.noite span.so-noite{display:inline}
+.noite .so-dia,.noite .js-wa{display:none!important}
+.noite .ctas,.noite .bar{grid-template-columns:1fr!important}
+.aviso-noite{background:#fff7e6;border:1px solid #f5c26b;color:#5c3b00;border-radius:12px;padding:12px 14px;margin:0 0 16px;font-weight:600;max-width:600px;display:none;align-items:center;gap:10px}
+.noite .aviso-noite{display:flex}
+.aviso-noite svg{width:22px;height:22px;flex:none}
 </style>
 </head>
 <body>
@@ -256,6 +277,7 @@ footer a{color:#fff}
         <span class="tag">Atendimento <b>24 horas</b> · todos os dias</span>
         <h1>Guincho 24h em <em>Águas Lindas de Goiás</em> e região</h1>
         <p class="sub">Carro quebrou, bateu ou não liga? Chame agora. Rebocamos carros, motos e utilitários com segurança, do jeito que você precisa.</p>
+        <p class="aviso-noite" role="status"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Das 22h às 6h o atendimento é só por ligação. Ligue que a gente atende na hora.</p>
         <div class="ctas">
           <a class="btn btn-wa js-wa" href="https://wa.me/5561900000000?text=Ol%C3%A1!%20Preciso%20de%20um%20guincho.%20Estou%20em%3A%20" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.8a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c0-.2-.3-.3-.6-.4zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.2A11.8 11.8 0 0 0 1.8 17.9L.1 24l6.3-1.6a11.8 11.8 0 0 0 5.6 1.4A11.8 11.8 0 0 0 20.4 3.6z"/></svg>
@@ -284,7 +306,7 @@ footer a{color:#fff}
   <div class="strip" role="note">
     <div class="wrap">
       <span>🚨 Ficou parado na <b>BR-070</b> ou na cidade?</span>
-      <span>Mande a localização pelo WhatsApp e já saímos.</span>
+      <span class="so-dia">Mande a localização pelo WhatsApp e já saímos.</span><span class="so-noite">Ligue agora, diga onde está e já saímos.</span>
     </div>
   </div>
 
@@ -293,8 +315,8 @@ footer a{color:#fff}
       <h2>Como chamar o guincho</h2>
       <p class="lead">Simples e rápido, em três passos.</p>
       <div class="steps" style="text-align:left">
-        <div class="step"><h3>Chame no WhatsApp ou ligue</h3><p>Fale com a gente a qualquer hora, dia ou noite.</p></div>
-        <div class="step"><h3>Envie a localização</h3><p>Diga onde você está, o modelo do veículo e para onde levar.</p></div>
+        <div class="step"><h3>Chame no WhatsApp ou ligue</h3><p>Durante o dia, pelo WhatsApp ou ligação. Das 22h às 6h, só por ligação.</p></div>
+        <div class="step"><h3>Informe a localização</h3><p>Diga onde você está, o modelo do veículo e para onde levar.</p></div>
         <div class="step"><h3>Receba o valor e aguarde</h3><p>Passamos o orçamento na hora e seguimos até você.</p></div>
       </div>
     </div>
@@ -355,7 +377,7 @@ footer a{color:#fff}
         <details><summary>Quanto custa o guincho em Águas Lindas?</summary><p>O valor depende da distância, do tipo de veículo e do local da remoção. Chame no WhatsApp com sua localização e o destino e passamos o orçamento na hora, sem compromisso.</p></details>
         <details><summary>Quais veículos vocês rebocam?</summary><p>Carros de passeio, motos, SUVs, caminhonetes e utilitários leves, inclusive veículos rebaixados e acidentados.</p></details>
         <details><summary>Vocês levam o carro para fora de Águas Lindas?</summary><p>Sim. Fazemos transporte para Brasília, cidades do Entorno e outras cidades de Goiás. Consulte o valor pelo WhatsApp.</p></details>
-        <details><summary>Como faço para chamar o guincho?</summary><p>Ligue ou chame no WhatsApp, envie sua localização pelo próprio WhatsApp e diga o modelo do veículo e o problema. Confirmamos o valor e o horário de chegada.</p></details>
+        <details><summary>Como faço para chamar o guincho?</summary><p>Ligue ou chame no WhatsApp, informe sua localização, o modelo do veículo e o problema. Confirmamos o valor e o horário de chegada. Das 22h às 6h, o atendimento é só por ligação.</p></details>
       </div>
     </div>
   </section>
@@ -363,7 +385,7 @@ footer a{color:#fff}
   <section class="final">
     <div class="wrap">
       <h2>Precisa de guincho agora?</h2>
-      <p>Estamos de plantão. Fale com a gente e resolva em minutos.</p>
+      <p><span class="so-dia">Estamos de plantão. Fale com a gente e resolva em minutos.</span><span class="so-noite">Plantão noturno: das 22h às 6h, atendimento só por ligação.</span></p>
       <div class="ctas">
         <a class="btn btn-wa js-wa" href="https://wa.me/5561900000000?text=Ol%C3%A1!%20Preciso%20de%20um%20guincho.%20Estou%20em%3A%20" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.2l-.9 1.1c-.2.2-.3.2-.6.1a8 8 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.8a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c0-.2-.3-.3-.6-.4zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.2A11.8 11.8 0 0 0 1.8 17.9L.1 24l6.3-1.6a11.8 11.8 0 0 0 5.6 1.4A11.8 11.8 0 0 0 20.4 3.6z"/></svg>
