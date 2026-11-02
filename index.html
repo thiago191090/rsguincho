@@ -28,6 +28,7 @@ function gtag_report_conversion(url) {
   gtag('js', new Date());
 
   gtag('config', 'G-9GKR7W30XN');
+  gtag('config', 'AW-18550629491');
 </script>  
 <script>
 /* Horário noturno: só ligação. Ajuste aqui (horário de Brasília). */
@@ -293,7 +294,6 @@ footer a{color:#fff}
   61900000000        -> número com DDD só dígitos (ex.: 61998309682)
   (61) 99830-9682    -> número formatado para exibição
   rsguincho.com.br   -> domínio definitivo
-  AW-XXXXXXXXXX      -> ID da conta Google Ads (no fim do arquivo)
 ====================================================================== -->
 
 <header class="top">
@@ -464,42 +464,23 @@ footer a{color:#fff}
 </div>
 
 <script>
-/* ===== Google Ads: troque AW-XXXXXXXXXX e os rótulos de conversão ===== */
-var ADS_ID = 'AW-XXXXXXXXXX';
-var CONV_WA = 'AW-XXXXXXXXXX/ROTULO_WHATSAPP';
-var CONV_CALL = 'AW-XXXXXXXXXX/ROTULO_LIGACAO';
-
 document.getElementById('ano').textContent = new Date().getFullYear();
 
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-
-/* Carrega o gtag só depois da página pronta, para não pesar no carregamento */
-if (ADS_ID.indexOf('XXXX') === -1) {
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ADS_ID;
-      document.head.appendChild(s);
-      gtag('js', new Date());
-      gtag('config', ADS_ID);
-    }, 1500);
-  });
-}
-
-/* Registra conversão em cliques de WhatsApp e ligação */
-function track(label, tipo) {
+/* ===== Google Ads: conversão em cliques de WhatsApp e ligação =====
+   Usa a função gtag_report_conversion (tag AW-18550629491) do <head>.
+   O link segue normalmente (WhatsApp abre em nova aba, tel: abre o discador),
+   sem depender do retorno do Google para o cliente conseguir chamar. */
+function rsConversao(tipo) {
   try {
-    gtag('event', 'conversion', { send_to: label });
+    gtag_report_conversion();
     gtag('event', tipo, { event_category: 'contato' });
   } catch (e) {}
 }
 document.querySelectorAll('.js-wa').forEach(function (a) {
-  a.addEventListener('click', function () { track(CONV_WA, 'clique_whatsapp'); });
+  a.addEventListener('click', function () { rsConversao('clique_whatsapp'); });
 });
 document.querySelectorAll('.js-call').forEach(function (a) {
-  a.addEventListener('click', function () { track(CONV_CALL, 'clique_ligacao'); });
+  a.addEventListener('click', function () { rsConversao('clique_ligacao'); });
 });
 </script>
 </body>
