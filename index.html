@@ -467,12 +467,16 @@ footer a{color:#fff}
 document.getElementById('ano').textContent = new Date().getFullYear();
 
 /* ===== Google Ads: conversão em cliques de WhatsApp e ligação =====
-   Usa a função gtag_report_conversion (tag AW-18550629491) do <head>.
+   Cada botão envia para sua própria ação de conversão (categoria Contato).
    O link segue normalmente (WhatsApp abre em nova aba, tel: abre o discador),
    sem depender do retorno do Google para o cliente conseguir chamar. */
+var RS_CONV = {
+  clique_whatsapp: 'AW-18550629491/YLvcCOTL3r4dEPPI0I1F', /* Clique WhatsApp */
+  clique_ligacao:  'AW-18550629491/rLzSCOfL3r4dEPPI0I1F'  /* Clique Ligar */
+};
 function rsConversao(tipo) {
   try {
-    gtag_report_conversion();
+    gtag('event', 'conversion', { send_to: RS_CONV[tipo], value: 1.0, currency: 'BRL' });
     gtag('event', tipo, { event_category: 'contato' });
   } catch (e) {}
 }
